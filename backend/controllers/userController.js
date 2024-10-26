@@ -1,5 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+
 const User = require("../models/userModel");
 
 // Description - Register a new user
@@ -17,7 +19,7 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new Error("Please include all fields");
     }
 
-    // If the user already exists
+    // Check if the user already exists.
     const userExists = await User.findOne({ email });
 
     if (userExists) {
@@ -43,7 +45,9 @@ const registerUser = asyncHandler(async (req, res) => {
             // MongoDB syntax to store id.
             _id: user._id,
             name: user.name,
-            email: user.email
+            email: user.email,
+            // We will send a token to use for authorization later with the help of JWT.
+            token: generateToken(user._id)
         })
     } else {
         res.status(400);
@@ -55,8 +59,32 @@ const registerUser = asyncHandler(async (req, res) => {
 // Route - /api/users/login
 // Access - Public
 const loginUser = asyncHandler(async (req, res) => {
-    res.send("Login Route");
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email });
+
+    // Check if the user exists and it's hashed password matches. 
+    if (user && (await bcrypt.compare(password, user.password))) {
+        res.status(200).json({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            // We will send a token to use for authorization later with the help of JWT.
+            token: generateToken(user._id)
+        })
+    } else {
+        // For unauthorized user (wrong login credentials).
+        res.status(401);
+        throw new Error("Invalid credentials");
+    }
 })
+
+// Function to generate a jsonwebtoken.
+const generateToken = (id) => {
+    return jwt.sign({ id }, process.env.JWT_SECRET, {
+        expiresIn: "150d"
+    })
+}
 
 module.exports = {
     registerUser,
