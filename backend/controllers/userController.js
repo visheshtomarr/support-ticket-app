@@ -16,7 +16,7 @@ const registerUser = asyncHandler(async (req, res) => {
         // status of 400, client error.
         res.status(400);
         // This will return the standard Error in an HTML format.
-        throw new Error("Please include all fields");
+        throw new Error("Please include all fields!");
     }
 
     // Check if the user already exists.
@@ -51,7 +51,7 @@ const registerUser = asyncHandler(async (req, res) => {
         })
     } else {
         res.status(400);
-        throw new Error("Invalid user data");
+        throw new Error("Invalid user data!");
     }
 })
 
@@ -75,7 +75,7 @@ const loginUser = asyncHandler(async (req, res) => {
     } else {
         // For unauthorized user (wrong login credentials).
         res.status(401);
-        throw new Error("Invalid credentials");
+        throw new Error("Invalid credentials!");
     }
 })
 
