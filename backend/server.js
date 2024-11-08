@@ -21,6 +21,7 @@ app.get("/", (req, res) => {
 
 // Routes
 app.use("/api/users", require("./routes/userRoutes"));
+app.use("/api/tickets", require("./routes/ticketRoutes"));
 
 // This error handler will send the error message along with the stack
 // trace in a json format.
