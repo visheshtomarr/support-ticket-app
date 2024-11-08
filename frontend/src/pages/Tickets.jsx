@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getTickets, reset } from "../features/ticket/ticketSlice";
+import { getTickets } from "../features/ticket/ticketSlice";
 import Spinner from "../components/Spinner";
 import BackButton from "../components/BackButton";
 import TicketItem from "../components/TicketItem";
 
 function Tickets() {
-    const { tickets, isLoading, isSuccess } = useSelector((state) => 
+    const { tickets, isLoading } = useSelector((state) => 
         state.ticket
     );
 
