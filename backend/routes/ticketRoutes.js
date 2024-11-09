@@ -5,6 +5,10 @@ const {getTickets, getTicket, createTicket, deleteTicket, updateTicket} = requir
 // Protect middleware.
 const { protectRoute } = require("../middleware/authMiddleware");
 
+// Re-route into note router.
+const noteRouter = require("./noteRoutes");
+router.use("/:ticketId/notes", noteRouter);
+
 // Create and protect our get and post routes.
 // A user cannot get other user's tickets.
 // Also, user cannot create a ticket for some other user.
