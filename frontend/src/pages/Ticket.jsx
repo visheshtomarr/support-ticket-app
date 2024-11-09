@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { getTicket, closeTicket } from "../features/ticket/ticketSlice";
-import { getNotes, reset as notesReset } from "../features/notes/noteSlice";
+import { getNotes, createNote } from "../features/notes/noteSlice";
 import { toast } from "react-toastify";
 import { FaPlus } from 'react-icons/fa';
 import Modal from "react-modal";
@@ -63,7 +63,7 @@ function Ticket() {
     // Function to handle note submission.
     const handleNoteSubmit = (e) => {
         e.preventDefault();
-        console.log("Note Submitted");
+        dispatch(createNote({ noteText, ticketId }));
         closeModal();
     }
 
